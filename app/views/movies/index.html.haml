@@ -6,14 +6,25 @@
   - @all_ratings.each do |rating|
     = rating
     = check_box_tag "ratings[#{rating}]", 1, @selected_ratings.include?(rating)
+    = hidden_field_tag 'sort', @sort
   = submit_tag 'Refresh', :id => 'ratings_submit'
 
 %table#movies
   %thead
     %tr
-      %th Movie Title
+      - if @sort == 'title'
+        %th.hilite
+          %a#title_header{:href => movies_path(:sort => :title)}> Movie Title
+      - else
+        %th
+          %a#title_header{:href => movies_path(:sort => :title)}> Movie Title
       %th Rating
-      %th Release Date
+      - if @sort == 'release_date'
+        %th.hilite
+          %a#release_date_header{:href => movies_path(:sort => :release_date)}> Release Date
+      - else
+        %th
+          %a#release_date_header{:href => movies_path(:sort => :release_date)}> Release Date
       %th More Info
   %tbody
     - @movies.each do |movie|

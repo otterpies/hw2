@@ -10,6 +10,12 @@ class MoviesController < ApplicationController
     @all_ratings = Movie.ratings
     @selected_ratings = params[:ratings] ? params[:ratings].keys : @all_ratings
     @movies = Movie.where(:rating => @selected_ratings)
+    if params.has_key? :sort
+      @movies = @movies.find(:all, :order => params[:sort])
+      @sort = params[:sort]
+    else
+      @sort = nil
+    end
   end
 
   def new
