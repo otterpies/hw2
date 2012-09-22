@@ -13,10 +13,10 @@
   %thead
     %tr
       %th{:class => @sort == 'title' ? "hilite":""}
-        %a#title_header{:href => movies_path(:sort => :title, :ratings => @selected_ratings)}> Movie Title
+        %a#title_header{:href => movies_path(:sort => :title, :ratings => Hash[@selected_ratings.collect { |v| [v, 1] }])}> Movie Title
       %th Rating
       %th{:class => @sort == 'release_date' ? "hilite":""}
-        %a#release_date_header{:href => movies_path(:sort => :release_date, :ratings => @selected_ratings)}> Release Date
+        %a#release_date_header{:href => movies_path(:sort => :release_date, :ratings => Hash[@selected_ratings.collect { |v| [v, 1] }])}> Release Date
       %th More Info
   %tbody
     - @movies.each do |movie|
