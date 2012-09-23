@@ -8,13 +8,26 @@ class MoviesController < ApplicationController
 
   def index
     @all_ratings = Movie.ratings
-    @selected_ratings = params[:ratings] ? params[:ratings].keys : @all_ratings
+    @selected_ratings = @all_ratings
+    if params[:ratings]
+      session[:ratings] = params[:ratings]
+      @selected_ratings = params[:ratings].keys
+    elsif session[:ratings]
+      restful_redirect = true
+      @selected_ratings = session[:ratings].keys
+    end
     @movies = Movie.where(:rating => @selected_ratings)
     if params.has_key? :sort
+      session[:sort] = params[:sort]
       @movies = @movies.find(:all, :order => params[:sort])
       @sort = params[:sort]
-    else
-      @sort = nil
+    elsif session[:sort]
+      restful_redirect = true
+      @sort = session[:sort]
+    end
+    if restful_redirect
+      flash.keep
+      redirect_to movies_path(:sort => session[:sort], :ratings => session[:ratings])
     end
   end
 
